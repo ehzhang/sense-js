@@ -8,18 +8,18 @@ Demo site!
 Set up the virtualenv in the directory, by doing:
 
 ```sh
-  virtualenv venv
-  source venv/bin/activate
+$ virtualenv venv
+$ source venv/bin/activate
 ```
 
 Install the requirements (once)
 
 ```sh
-  virtualenv venv
-  (venv) pip install -r requirements.txt
+$ virtualenv venv
+(venv)$ pip install -r requirements.txt
 ```
 
 Start the application:
 ```sh
-  (venv) python app.py
+(venv)$ python app.py
 ```
