@@ -189,11 +189,20 @@
     }
   };
 
+  /**
+   * Flick ([options], callback)
+   * - Options:
+   *    interval (int)
+   *    sensitivity
+   *
+   * - Data:
+   *    direction String 'left', 'right'
+   *    magnitude (float)
+   */
   Sense.prototype.flick = function() {
     if (window.DeviceMotionEvent) {
       var FLICK_ACCELERATION = 15;
       var defaults = {
-            direction: null,
             interval: 150,
             sensitivity: 1
           },
