@@ -232,6 +232,39 @@
     }
   };
 
+  Sense.prototype.fling = function() {
+    if (window.DeviceMotionEvent) {
+      var THROW_ACCELERATION = 10;
+      var defaults = {
+            interval: 150,
+            sensitivity: 1
+          },
+          args = getArgs(arguments, defaults),
+          callback = args.callback,
+          options = args.options;
+
+      var throwing = false;
+
+      window.addEventListener('devicemotion', function (eventData) {
+
+        var acceleration = eventData.acceleration;
+
+        if (acceleration.z > options.sensitivity * THROW_ACCELERATION) {
+          if (!throwing){
+            throwing = true;
+            callback({
+              a: acceleration.z,
+              magnitude: Math.abs(acceleration.z)
+            });
+            setTimeout(function(){
+              throwing = false;
+            }, options.interval);
+          }
+        }
+      })
+    }
+  };
+
   Sense.prototype.toss = function() {
     var intervalExpired = false;
     var z_accels = [];

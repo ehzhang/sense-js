@@ -18,12 +18,12 @@ router.get('/flick', function(req, res) {
   res.sendfile('examples/flick.html');
 });
 
-router.get('/throw', function(req, res) {
-  res.sendfile('examples/throw.html');
-});
-
 router.get('/toss', function(req, res) {
   res.sendfile('examples/toss.html');
+});
+
+router.get('/color-fling', function(req, res){
+  res.sendfile('examples/color_fling.html');
 });
 
 module.exports = router;

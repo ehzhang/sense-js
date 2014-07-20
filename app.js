@@ -10,6 +10,23 @@ var users = require('./routes/users');
 
 var app = express();
 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+// Color throw :)
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('color', function(color){
+    console.log(color);
+    io.emit('color-broadcast', color)
+  });
+});
+
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
