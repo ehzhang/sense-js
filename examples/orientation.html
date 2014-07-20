@@ -72,11 +72,21 @@
       oldTime = time;
     }
 
-    setInterval(frame, 50);
-    sense.orientation(function(data){
-      gamma = data.gamma * Math.PI / 180.0;
-      beta = data.beta * Math.PI / 180.0;
-    })
+    setInterval(frame, 40);
+
+    sense.orientation
+    (
+        {
+          alphaThreshold: 365,
+          betaThreshold: 0.05,
+          gammaThreshold: 0.05,
+          radians: true
+        },
+        function(data) {
+          gamma = data.gamma,
+          beta = data.beta
+        }
+    )
   </script>
 </head>
 <body style="padding:0;margin:0">
