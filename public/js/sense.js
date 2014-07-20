@@ -234,17 +234,12 @@
 
   Sense.prototype.toss = function() {
     var intervalExpired = false;
-    var z_accels = ["0"];
-    var x_accels = ["0"];
-    var y_accels = ["0"];
+    var z_accels = [];
+    var x_accels = [];
+    var y_accels = [];
 
-    var z_thetas = ["0"];
-    var x_thetas = ["0"];
-    var y_thetas = ["0"];
-
-    var zTheta = false;
-    var xTheta = true;
-    var yTheta = true;
+    var Z_THRESHOLD = -1.5;
+    var X_Y_THRESHOLD = 2;
 
     setInterval(function(){intervalExpired = true}, 250);
 
@@ -259,9 +254,7 @@
       options = args.options;
 
       window.addEventListener('devicemotion', function (eventData) {
-        var info, xyz = "[Z]";
         var acceleration = eventData.acceleration;
-        info = xyz.replace("Z", Math.round(10*acceleration.z)/10);
 
         var data = {
           z: Math.round(100*acceleration.z)/100
@@ -276,13 +269,13 @@
           var zMove = false;
           var xMove = true;
           var yMove = true;
-          if (z_accels[z_accels.length-1] < -1.5 || z_accels[z_accels.length-2] < -1.5 || z_accels[z_accels.length-3] < -1.5 || z_accels[z_accels.length-4] < -1.5) {
+          if (z_accels[z_accels.length-1] < Z_THRESHOLD || z_accels[z_accels.length-2] < Z_THRESHOLD) {
             zMove = true;
           }
-          if (x_accels[x_accels.length-1] > -2 && x_accels[x_accels.length-1] < 2) {
+          if (Math.abs(x_accels[x_accels.length-1]) > X_Y_THRESHOLD) {
             xMove = false;
           }
-          if (y_accels[y_accels.length-1] > -2 && y_accels[y_accels.length-1] < 2) {
+          if (Math.abs(y_accels[y_accels.length-1]) > X_Y_THRESHOLD) {
             yMove = false;
           }
 

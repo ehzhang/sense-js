@@ -11,13 +11,25 @@
       debug: true
     });
 
-    sense.toss(function(data){
-      // Toss
-    })
+      sense.toss(function(data){
+        console.log(data);
+        document.getElementById("Accel").innerHTML = data;
+      });
 
   </script>
 </head>
 <body>
+
+  <div class="main">
+    <h2>Device Motion</h2>
+    <div id = "Toss"></div>
+    <div id = "TossAngle"></div>
+    <table>
+      <tr>
+        <td>acceleration</td><td id="Accel">moo</td>
+      </tr>
+    </table>
+  </div>
 
 </body>
 </html>

@@ -22,4 +22,8 @@ router.get('/throw', function(req, res) {
   res.sendfile('examples/throw.html');
 });
 
+router.get('/toss', function(req, res) {
+  res.sendfile('examples/toss.html');
+});
+
 module.exports = router;
