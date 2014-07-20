@@ -9,6 +9,10 @@ HTML5 offers a lot of awesome access to hardware data. Sense.js is a library tha
 abstracts away the math and gives developers and designers easy access to some
 common non-touch gesture interactions with simple javascript callbacks.
 
+### Disclaimer
+This was made as a part of GreylockU's Hackfest, and will likely see changes to make
+things better/add more gestures :)
+
 Demo
 ------
 You can find a demo at http://sense-js.jit.su/
