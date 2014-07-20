@@ -253,7 +253,6 @@
           if (!throwing){
             throwing = true;
             callback({
-              a: acceleration.z,
               magnitude: Math.abs(acceleration.z)
             });
             setTimeout(function(){
@@ -304,7 +303,7 @@
         }
       })
     }
-  }
+  };
 
 
   /*
