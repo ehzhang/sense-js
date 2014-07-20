@@ -7,7 +7,28 @@ Overview
 
 HTML5 offers a lot of awesome access to hardware data. Sense.js is a library that
 abstracts away the math and gives developers and designers easy access to some
-common gesture interactions with simple javascript callbacks.
+common non-touch gesture interactions with simple javascript callbacks.
+
+Demo
+------
+You can find a demo at http://sense-js.jit.su/
+
+#### Orientation
+A ball rolls around based on your screen position!
+
+#### Flick
+Flick your phone to the right or left to slide a color.
+
+#### Flip
+Flip your phone face down and face up, and a new color appears!
+
+#### Color Fling
+Open this page on multiple devices. Selecting a color and flicking it
+'flicks' that color to all other devices.
+
+#### Scroll
+sense.js enabled scroll based on screen tilt
+
 
 Quickstart
 ----------
