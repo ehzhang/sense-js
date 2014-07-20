@@ -82,10 +82,60 @@
   var updateDebugger = function(data){
     if (config.debug){
       document.getElementById('sense-debugger')
-          .innerText = JSON.stringify(data);
+          .innerText = JSON.stringify(data, undefined, 2);
     }
   };
 
+  var withinThreshold = function(a, b, threshold){
+    return b < a + threshold && b > a - threshold
+  };
+
+  /**
+   * Orientation ([options], callback)
+   * - Options:
+   *    alphaThreshold (number)
+   *    betaThreshold (number)
+   *    gammaThreshold (number)
+   *    radians (boolean)
+   *
+   * - Data:
+   *    alpha (num)
+   *    beta (num)
+   *    gamma (num)
+   */
+  Sense.prototype.orientation = function() {
+    if (window.DeviceOrientationEvent) {
+      var defaults = {
+            alphaThreshold: 1,
+            betaThreshold: 1,
+            gammaThreshold: 1,
+            radians: false
+          },
+          args = getArgs(arguments, defaults),
+          callback = args.callback,
+          options = args.options;
+
+
+      var prevData = {
+        alpha: 0,
+        beta: 0,
+        gamma: 0
+      };
+
+      window.addEventListener('deviceorientation', function (eventData) {
+
+        var data = {
+          alpha: eventData.alpha,
+          beta: eventData.beta,
+          gamma: eventData.gamma
+        };
+
+        callback(data)
+
+      })
+
+    }
+  };
 
   /*
     Tilt function!

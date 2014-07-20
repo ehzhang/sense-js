@@ -5,6 +5,10 @@ app = Flask(__name__)
 def index():
     return render_template('base.html')
 
+@app.route('/orientation')
+def orientation():
+    return render_template('orientation.html')
+
 @app.route('/tilt')
 def tilt():
     return render_template('tilt.html')
