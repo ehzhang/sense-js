@@ -48,9 +48,9 @@ gamma         | (number) degree/radian value for device's left-right tilt
 
 Sample Usage:
 ```javascript
-    sense.orientation(function(data){
-        console.log(data)
-    }
+sense.orientation(function(data){
+    console.log(data)
+}
 ```
 
 ### sense.flick([options], callback)
@@ -70,9 +70,9 @@ magnitude     | (number) the magnitude of the acceleration on flick
 
 Sample Usage:
 ```javascript
-    sense.flick(function(data){
-        slidePage(data.direction)
-    }
+sense.flick(function(data){
+    slidePage(data.direction)
+}
 ```
 
 ### sense.fling([options], callback)
@@ -92,9 +92,9 @@ magnitude     | (number) the magnitude of the acceleration on flick
 
 Sample Usage:
 ```javascript
-    sense.fling(function(data){
-        sendFile();
-    }
+sense.fling(function(data){
+    sendFile();
+}
 ```
 
 ### sense.flip([options], callback)
@@ -112,9 +112,9 @@ gamma         | (number) the final gamma value after the flip
 
 Sample Usage:
 ```javascript
-    sense.flip(function(data){
-        showRandomNumber();
-    }
+sense.flip(function(data){
+    showRandomNumber();
+}
 ```
 
 ### sense.addTiltScroll([options])
@@ -132,7 +132,7 @@ maxVerticalSpeed    | (number)    | 15
 
 Sample Usage:
 ```javascript
-    sense.addTiltScroll();
+sense.addTiltScroll();
 ```
 
 ### Debugging
@@ -140,7 +140,7 @@ Sample Usage:
 We can initialize Sense with a debug flag!
 
 ```javascript
-    var sense = sense.init({debug: true});
+var sense = sense.init({debug: true});
 ```
 
 The debugger will include a fixed div in the bottom right corner that displays
