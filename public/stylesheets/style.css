@@ -5,7 +5,8 @@ body {
 }
 
 .title {
-  font: 10em "Montserrat", Helvetica, Arial, sans-serif;
+  font: 8em "Montserrat", Helvetica, Arial, sans-serif;
+  margin-bottom: 20px;
 }
 
 .subtitle {
