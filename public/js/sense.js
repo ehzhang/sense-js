@@ -144,9 +144,9 @@
     if (window.DeviceOrientationEvent) {
       var callback,
           options = {
-            threshold: 25,
+            threshold: 5,
             direction: "both",
-            gestureDuration: 300
+            gestureDuration: 500
           },
           args = getArgs(arguments, options),
           lastSample,
@@ -265,63 +265,6 @@
     }
   };
 
-  Sense.prototype.toss = function() {
-    var intervalExpired = false;
-    var z_accels = [];
-    var x_accels = [];
-    var y_accels = [];
-
-    var Z_THRESHOLD = -1.5;
-    var X_Y_THRESHOLD = 2;
-
-    setInterval(function(){intervalExpired = true}, 250);
-
-    if (window.DeviceMotionEvent) {
-      var callback,
-          options = {
-
-          },
-          args = getArgs(arguments, options);
-
-      callback = args.callback;
-      options = args.options;
-
-      window.addEventListener('devicemotion', function (eventData) {
-        var acceleration = eventData.acceleration;
-
-        if (intervalExpired) {
-          z_accels[z_accels.length] = Math.round(10*acceleration.z)/10;
-          x_accels[x_accels.length] = Math.round(10*acceleration.x)/10;
-          y_accels[y_accels.length] = Math.round(10*acceleration.y)/10;
-
-          intervalExpired = false;
-          var zMove = false;
-          var xMove = true;
-          var yMove = true;
-          if (z_accels[z_accels.length-1] < Z_THRESHOLD || z_accels[z_accels.length-2] < Z_THRESHOLD) {
-            zMove = true;
-          }
-          if (Math.abs(x_accels[x_accels.length-1]) > X_Y_THRESHOLD) {
-            xMove = false;
-          }
-          if (Math.abs(y_accels[y_accels.length-1]) > X_Y_THRESHOLD) {
-            yMove = false;
-          }
-
-          if (zMove && !xMove && !yMove) {
-            document.getElementById("Toss").innerHTML = z_accels[z_accels.length - 1];
-            document.getElementById("TossAngle").innerHTML = "TOSS";
-
-          }
-            callback({
-              magnitude: z_accels[z_accels.length-1] > z_accels[z_accels.length-2] ? z_accels[z_accels.length-1] : z_accels[z_accels.length-2]
-            });
-
-        }
-      });
-    }
-  };
-
   Sense.prototype.flip = function() {
     var gammas = [];
     if (window.DeviceOrientationEvent) {
@@ -330,8 +273,7 @@
             gestureDuration: 250
           },
           args = getArgs(arguments, options),
-          lastSample,
-          intervalExpired = true;
+          intervalExpired = false;
 
       callback = args.callback;
       options = args.options;
@@ -343,10 +285,11 @@
         var found = false;
         if(intervalExpired) {
           gammas[gammas.length] = eventData.gamma;
-          for (var i=0; i < 5; i++) {
+          for (var i=1; i < 5; i++) {
             if (Math.abs(gammas[gammas.length-1] - gammas[gammas.length-1-i]) > 160) {
               found = true;
               final_gamma = gammas[gammas.length - 1];
+              gammas = [];
               break;
             }
           }
@@ -359,7 +302,76 @@
           };
           callback(data);
         }
+      })
+    }
+  }
 
+
+  /*
+   Tilt scrolling!
+   */
+  Sense.prototype.addTiltScroll = function(optns) {
+    if (window.DeviceOrientationEvent) {
+      var options = optns == null ? {
+          maxHorizontalAngle: 80,
+          maxHorizontalOffset: 100,
+          maxHorizontalSpeed: 15,
+          maxVerticalAngle: 40,
+          maxVerticalOffset: 100,
+          maxVerticalSpeed: 15
+        } : optns,
+        lastNormHAngle = 0,
+        lastNormVAngle = 0,
+        verticalPageStop = false,
+        horizontalPageStop = false;
+
+      var horizontalFrameOffset = -options.maxHorizontalAngle/2,
+        verticalFrameOffset = -options.maxVerticalAngle/2;
+
+      window.addEventListener('deviceorientation', function(eventData){
+        var hAngle = eventData.gamma,
+          vAngle = -eventData.beta;
+
+        if(hAngle < horizontalFrameOffset){
+          horizontalFrameOffset = hAngle;
+        }
+
+        if(hAngle > horizontalFrameOffset + options.maxHorizontalAngle){
+          horizontalFrameOffset = hAngle - options.maxHorizontalAngle;
+        }
+
+        if(vAngle < verticalFrameOffset){
+          verticalFrameOffset = vAngle;
+        }
+
+        if(vAngle > verticalFrameOffset + options.maxVerticalAngle){
+          verticalFrameOffset = vAngle - options.maxVerticalAngle;
+        }
+
+        var normalHAngle = (hAngle - horizontalFrameOffset) * 2 /options.maxHorizontalAngle - 1.0,
+          normalVAngle = (vAngle - verticalFrameOffset) * 2 /options.maxVerticalAngle - 1.0,
+          positionHDelta = (normalHAngle - lastNormHAngle) * options.maxHorizontalOffset,
+          positionVDelta = (normalVAngle - lastNormVAngle) * options.maxVerticalOffset;
+
+        if(lastNormHAngle != 0)
+
+        lastNormHAngle = normalHAngle;
+        lastNormVAngle = normalVAngle;
+
+        var data = {
+          scrollByX: clippingMap(normalHAngle) * options.maxHorizontalSpeed + positionHDelta,
+          scrollByY: clippingMap(normalVAngle) * options.maxVerticalSpeed + positionVDelta
+        };
+
+        function clippingMap(num) {
+          var quadraticWidth = .6,
+            transition = 1.0 - quadraticWidth;
+          if (Math.abs(num) < transition) return 0;
+          if (num > 0) return Math.pow((num - transition) / quadraticWidth, 2);
+          return -Math.pow((num + transition) / quadraticWidth, 2)
+        }
+
+        window.scrollBy(data.scrollByX, data.scrollByY);
       })
     }
   };
