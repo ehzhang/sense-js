@@ -50,7 +50,7 @@
       // We have both the callback and an arguments hash
       callback = args[1];
       return {
-        options: arguments[0],
+        options: args[0],
         callback: function(data){
           updateDebugger(data);
           callback(data);
