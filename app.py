@@ -9,6 +9,10 @@ def index():
 def tilt():
     return render_template('tilt.html')
 
+@app.route('/toss')
+def toss():
+    return render_template('toss.html')
+
 if __name__ == '__main__':
     app.debug = True
     app.run()

@@ -115,6 +115,34 @@
     }
   };
 
+Sense.prototype.toss = function() {
+
+  if (window.DeviceMotionEvent) {
+    var callback,
+        options = {
+
+        },
+        args = getArgs(arguments, options);
+
+      callback = args.callback;
+      options = args.options;
+
+      window.addEventListener('devicemotion', function (eventData) {
+        var info, xyz = "[X, Y, Z]";
+        var acceleration = eventData.acceleration;
+        info = xyz.replace("X", Math.round(10*acceleration.x)/10);
+        info = info.replace("Y", Math.round(10*acceleration.y)/10);
+        info = info.replace("Z", Math.round(10*acceleration.z)/10);
+        var data = {
+          acc: eventData.acceleration
+
+        };
+        callback(info);
+      });
+    }
+
+  }
+
   window.sense = sense;
 
 }(window, document));
