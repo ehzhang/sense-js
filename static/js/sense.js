@@ -144,23 +144,47 @@
     if (window.DeviceOrientationEvent) {
       var callback,
           options = {
-            // Default Options
+            threshold: 25,
+            direction: "both",
+            gestureDuration: 300
           },
-          args = getArgs(arguments, options);
+          args = getArgs(arguments, options),
+          lastSample,
+          intervalExpired = true;
 
       callback = args.callback;
       options = args.options;
 
-      window.addEventListener('deviceorientation', function (eventData) {
+      setInterval(function(){intervalExpired = true}, options.gestureDuration)
 
+      window.addEventListener('deviceorientation', function(eventData){
         // Here, you take the eventData and the options that you have and
         // process the data, and then feed it to the callback
+        if(intervalExpired) {
+          lastSample = eventData.gamma;
+          intervalExpired = false;
+        }
+        var delta = lastSample - eventData.gamma;
 
-        var data = {
-          direction: eventData.beta < 0 ? "UP" : "DOWN"
-        };
+        if(delta > options.threshold) {
+          lastSample = eventData.gamma;
+          var data = {
+            direction: "LEFT",
+            magnitude: Math.round(delta)
 
-        callback(data);
+          };
+          callback(data);
+        }
+
+        if(delta < -options.threshold) {
+          lastSample = eventData.gamma;
+          var data = {
+            direction: "RIGHT",
+            magnitude: Math.round(-delta)
+          };
+          callback(data);
+        }
+
       })
     }
   };
