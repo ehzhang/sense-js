@@ -9,17 +9,77 @@
   <link href='stylesheets/style.css' rel="stylesheet" type="text/css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <canvas id="ballcanvas">Your browser does not support the HTML5 canvas tag.</canvas>
+
   <script>
     var sense = sense.init({
-      debug: true
-    });
+    }),
+        c = document.getElementById('ballcanvas'),
+        context = c.getContext('2d'),
+        radius = 30,
+        ballx = 50,
+        bally = 50,
+        velx = 0,
+        vely = 0,
+        gravity = 3000,
+        gamma = 0,
+        beta = 0,
+        bounceDamping = .4,
+        oldTime = new Date(),
+        width = window.innerWidth,
+        height = window.innerHeight;
+    c.height = height;
+    c.width = width;
 
+    function draw() {
+      context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      context.fillStyle = '000000';
+      context.beginPath();
+      context.arc(ballx, bally, radius, 0, Math.PI * 2);
+      context.fill();
+    }
+
+    function frame() {
+      var time = new Date(),
+          elapsedTime = (time - oldTime)/1000.0;
+      velx += gravity * elapsedTime * Math.sin(gamma);
+      vely += gravity * elapsedTime * Math.sin(beta);
+      ballx += velx * elapsedTime;
+      bally += vely * elapsedTime;
+
+      if (ballx + radius > width) {
+        ballx = width - radius;
+        velx *= -bounceDamping;
+      }
+
+      if (ballx - radius < 0) {
+        ballx = radius;
+        velx *= -bounceDamping;
+      }
+
+      if (bally + radius > height) {
+        bally = height - radius;
+        vely *= -bounceDamping;
+      }
+
+      if (bally - radius < 0) {
+        bally = radius;
+        vely *= -bounceDamping;
+      }
+
+      draw();
+      oldTime = time;
+    }
+
+    setInterval(frame, 50);
     sense.orientation(function(data){
-      // Orientation
+      gamma = data.gamma * Math.PI / 180.0;
+      beta = data.beta * Math.PI / 180.0;
     })
   </script>
 </head>
-<body>
+<body style="padding:0;margin:0">
 
 </body>
 </html>
