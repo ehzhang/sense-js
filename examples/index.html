@@ -17,12 +17,39 @@
     ga('create', 'UA-53015325-1', 'auto');
     ga('send', 'pageview');
 
+
+    $(document).ready(function(){
+      var colors = [
+        "#33B5E5",
+        "#AA66CC",
+        "#99CC00",
+        "#FFBB33",
+        "#FF4444"
+      ];
+
+      var randomColor = colors[Math.floor(Math.random()*colors.length)];
+
+      function injectStyles(rule) {
+        var div = $("<div />", {
+          html: '&shy;<style>' + rule + '</style>'
+        }).appendTo("body");
+      }
+      injectStyles('a.button:hover{ color:white !important; background:' + randomColor +';}');
+
+      $('.js').css({"color": randomColor});
+      $('a').css({"color": randomColor});
+      $('a.button')
+          .css({
+            "borderColor": randomColor
+          });
+      })
+
   </script>
 </head>
 <body>
 
   <div class="title">
-    sense.js
+    sense.<span class="js">js</span>
   </div>
 
   <div class="subtitle">
@@ -30,29 +57,15 @@
   </div>
 
   <div class="examples">
-    <a href="/orientation">
-      ORIENTATION
-    </a>
+    <a href="/orientation">ORIENTATION</a>
     //
-    <a href="/tilt">
-      TILT
-    </a>
+    <a href="/flick">FLICK</a>
     //
-    <a href="/flick">
-      FLICK
-    </a>
+    <a href="/flip">FLIP</a>
     //
-    <a href="/flip">
-      FLIP
-    </a>
+    <a href="/color-fling">COLOR FLING</a>
     //
-    <a href="/color-fling">
-      COLOR FLING
-    </a>
-    //
-    <a href="/scroll">
-      SCROLL
-    </a>
+    <a href="/scroll">SCROLL</a>
   </div>
 
   <div class="downloads">
@@ -63,12 +76,7 @@
     <a href="http://github.com/ehzhang/sense-js" class="button">
       DOCUMENTATION ON GITHUB
     </a>
-    //
-    <a href="/scroll">
-      SCROLL
-    </a>
   </div>
 
 </body>
-  <script>hljs.initHighlightingOnLoad();</script>
 </html>
