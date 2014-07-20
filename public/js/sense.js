@@ -289,6 +289,132 @@
     }
   };
 
+  Sense.prototype.toss = function() {
+    var intervalExpired = false;
+    var z_accels = [];
+    var x_accels = [];
+    var y_accels = [];
+
+    var Z_THRESHOLD = -1.5;
+    var X_Y_THRESHOLD = 2;
+
+    setInterval(function(){intervalExpired = true}, 250);
+
+    if (window.DeviceMotionEvent) {
+      var callback,
+          options = {
+
+          },
+          args = getArgs(arguments, options);
+
+      callback = args.callback;
+      options = args.options;
+
+      window.addEventListener('devicemotion', function (eventData) {
+        var acceleration = eventData.acceleration;
+
+        if (intervalExpired) {
+          z_accels[z_accels.length] = Math.round(10*acceleration.z)/10;
+          x_accels[x_accels.length] = Math.round(10*acceleration.x)/10;
+          y_accels[y_accels.length] = Math.round(10*acceleration.y)/10;
+
+          intervalExpired = false;
+          var zMove = false;
+          var xMove = true;
+          var yMove = true;
+          if (z_accels[z_accels.length-1] < Z_THRESHOLD || z_accels[z_accels.length-2] < Z_THRESHOLD) {
+            zMove = true;
+          }
+          if (Math.abs(x_accels[x_accels.length-1]) > X_Y_THRESHOLD) {
+            xMove = false;
+          }
+          if (Math.abs(y_accels[y_accels.length-1]) > X_Y_THRESHOLD) {
+            yMove = false;
+          }
+
+          if (zMove && !xMove && !yMove) {
+            document.getElementById("Toss").innerHTML = z_accels[z_accels.length - 1];
+            document.getElementById("TossAngle").innerHTML = "TOSS";
+
+          }
+            callback({
+              magnitude: z_accels[z_accels.length-1] > z_accels[z_accels.length-2] ? z_accels[z_accels.length-1] : z_accels[z_accels.length-2]
+            });
+
+        }
+      });
+    }
+  };
+
+  Sense.prototype.flip = function() {
+    var gammas = [];
+    if (window.DeviceOrientationEvent) {
+      var callback,
+          options = {
+            threshold: 25,
+            direction: "both",
+            gestureDuration: 250
+          },
+          args = getArgs(arguments, options),
+          lastSample,
+          intervalExpired = true;
+
+      callback = args.callback;
+      options = args.options;
+
+      setInterval(function(){intervalExpired = true}, options.gestureDuration);
+
+      window.addEventListener('deviceorientation', function(eventData){
+        // Here, you take the eventData and the options that you have and
+        // process the data, and then feed it to the callback
+        var final_gamma = 0
+        var found = false;
+        if(intervalExpired) {
+          gammas[gammas.length] = eventData.gamma;
+          //document.getElementById("Flip").innerHTML = eventData.gamma;
+          for (var i=0; i < 5; i++) {
+            if (Math.abs(gammas[gammas.length-1] - gammas[gammas.length-1-i]) > 160) {
+              //document.getElementById("Floss").innerHTML = z_accels[z_accels.length - 1];
+              document.getElementById("Flip").innerHTML = "FLIP";
+              found = true;
+              final_gamma = gammas[gammas.length - 1];
+              break;
+            }
+          }
+          intervalExpired = false;
+        }
+
+        if (found) {
+          var data = {
+            magnitude: Math.round(final_gamma)
+          };
+          callback(data);
+        }
+        var delta = lastSample - eventData.gamma;
+
+        if(delta > options.threshold) {
+          lastSample = eventData.gamma;
+          var data = {
+            direction: "LEFT",
+            magnitude: Math.round(delta)
+
+          };
+          callback(data);
+        }
+
+        if(delta < -options.threshold) {
+          lastSample = eventData.gamma;
+          var data = {
+            direction: "RIGHT",
+            magnitude: Math.round(-delta)
+          };
+          callback(data);
+        }
+
+      })
+    }
+  };
+
   window.sense = sense;
 
 }(window, document));

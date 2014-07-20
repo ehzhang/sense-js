@@ -30,4 +30,7 @@ router.get('/scroll', function(req, res) {
   res.sendfile('examples/scroll.html');
 });
 
+router.get('/flip', function(req, res) {
+  res.sendfile('examples/flip.html');
+});
 module.exports = router;
