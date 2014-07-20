@@ -1,6 +1,6 @@
 {
   "name": "sense-js",
-  "version": "0.0.1",
+  "version": "0.0.1-2",
   "private": true,
   "scripts": {
     "start": "node ./app.js"
@@ -14,5 +14,9 @@
     "morgan": "~1.0.0",
     "socket.io": "^1.0.6",
     "static-favicon": "~1.0.0"
+  },
+  "subdomain": "sense-js",
+  "engines": {
+    "node": "0.10.x"
   }
 }
