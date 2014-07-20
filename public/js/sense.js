@@ -232,60 +232,36 @@
     }
   };
 
-  Sense.prototype.toss = function() {
-    var intervalExpired = false;
-    var z_accels = [];
-    var x_accels = [];
-    var y_accels = [];
-
-    var Z_THRESHOLD = -1.5;
-    var X_Y_THRESHOLD = 2;
-
-    setInterval(function(){intervalExpired = true}, 250);
-
+  Sense.prototype.fling = function() {
     if (window.DeviceMotionEvent) {
-      var callback,
-          options = {
-
+      var THROW_ACCELERATION = 10;
+      var defaults = {
+            interval: 150,
+            sensitivity: 1
           },
-          args = getArgs(arguments, options);
+          args = getArgs(arguments, defaults),
+          callback = args.callback,
+          options = args.options;
 
-      callback = args.callback;
-      options = args.options;
+      var throwing = false;
 
       window.addEventListener('devicemotion', function (eventData) {
+
         var acceleration = eventData.acceleration;
 
-        if (intervalExpired) {
-          z_accels[z_accels.length] = Math.round(10*acceleration.z)/10;
-          x_accels[x_accels.length] = Math.round(10*acceleration.x)/10;
-          y_accels[y_accels.length] = Math.round(10*acceleration.y)/10;
-
-          intervalExpired = false;
-          var zMove = false;
-          var xMove = true;
-          var yMove = true;
-          if (z_accels[z_accels.length-1] < Z_THRESHOLD || z_accels[z_accels.length-2] < Z_THRESHOLD) {
-            zMove = true;
-          }
-          if (Math.abs(x_accels[x_accels.length-1]) > X_Y_THRESHOLD) {
-            xMove = false;
-          }
-          if (Math.abs(y_accels[y_accels.length-1]) > X_Y_THRESHOLD) {
-            yMove = false;
-          }
-
-          if (zMove && !xMove && !yMove) {
-            document.getElementById("Toss").innerHTML = z_accels[z_accels.length - 1];
-            document.getElementById("TossAngle").innerHTML = "TOSS";
-
-          }
+        if (acceleration.z > options.sensitivity * THROW_ACCELERATION) {
+          if (!throwing){
+            throwing = true;
             callback({
-              magnitude: z_accels[z_accels.length-1] > z_accels[z_accels.length-2] ? z_accels[z_accels.length-1] : z_accels[z_accels.length-2]
+              a: acceleration.z,
+              magnitude: Math.abs(acceleration.z)
             });
-
+            setTimeout(function(){
+              throwing = false;
+            }, options.interval);
+          }
         }
-      });
+      })
     }
   };
 
@@ -305,13 +281,12 @@
       setInterval(function(){intervalExpired = true}, options.gestureDuration);
 
       window.addEventListener('deviceorientation', function(eventData){
-        var final_gamma = 0
+        var final_gamma = 0;
         var found = false;
         if(intervalExpired) {
           gammas[gammas.length] = eventData.gamma;
           for (var i=1; i < 5; i++) {
             if (Math.abs(gammas[gammas.length-1] - gammas[gammas.length-1-i]) > 160) {
-              document.getElementById("Flip").innerHTML = "FLIP";
               found = true;
               final_gamma = gammas[gammas.length - 1];
               gammas = [];
