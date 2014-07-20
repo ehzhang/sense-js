@@ -13,6 +13,10 @@ def orientation():
 def tilt():
     return render_template('tilt.html')
 
+@app.route('/flick')
+def flick():
+    return render_template('flick.html')
+
 if __name__ == '__main__':
     app.debug = True
     app.run()

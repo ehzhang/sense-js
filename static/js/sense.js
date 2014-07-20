@@ -189,6 +189,40 @@
     }
   };
 
+  Sense.prototype.flick = function() {
+    if (window.DeviceMotionEvent) {
+      var FLICK_ACCELERATION = 15;
+      var defaults = {
+            direction: null,
+            interval: 150,
+            sensitivity: 1
+          },
+          args = getArgs(arguments, defaults),
+          callback = args.callback,
+          options = args.options;
+
+      var flicking = false;
+
+      window.addEventListener('devicemotion', function (eventData) {
+
+        var acceleration = eventData.acceleration;
+
+        if (Math.abs(acceleration.x) > options.sensitivity * FLICK_ACCELERATION) {
+          if (!flicking){
+            flicking = true;
+            callback({
+              direction: acceleration.x > 0 ? 'left' : 'right',
+              magnitude: Math.abs(acceleration.x)
+            });
+            setTimeout(function(){
+              flicking = false;
+            }, options.interval);
+          }
+        }
+      })
+    }
+  };
+
   window.sense = sense;
 
 }(window, document));
