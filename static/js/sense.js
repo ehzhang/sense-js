@@ -131,6 +131,7 @@ Sense.prototype.toss = function() {
 
   setInterval(function(){intervalExpired = true}, 250)
 
+/*
 if (window.DeviceOrientationEvent) {
       var callback,
           options = {
@@ -161,7 +162,7 @@ if (window.DeviceOrientationEvent) {
 
       })
     }
-
+*/
   if (window.DeviceMotionEvent) {
     var callback,
         options = {
@@ -194,18 +195,19 @@ if (window.DeviceOrientationEvent) {
           var zMove = false;
           var xMove = true;
           var yMove = true;
-          if (z_accels[z_accels.length-1] < -2) {
+          if (z_accels[z_accels.length-1] < -1.5 || z_accels[z_accels.length-2] < -1.5 || z_accels[z_accels.length-3] < -1.5 || z_accels[z_accels.length-4] < -1.5) {
             zMove = true;
           }
-          if (x_accels[x_accels.length-1] > -1 && x_accels[x_accels.length-1] < 1) {
+          if (x_accels[x_accels.length-1] > -2 && x_accels[x_accels.length-1] < 2) {
             xMove = false;
           }
-          if (y_accels[y_accels.length-1] > -1 && y_accels[y_accels.length-1] < 1) {
+          if (y_accels[y_accels.length-1] > -2 && y_accels[y_accels.length-1] < 2) {
             yMove = false;
           }
 
           if (zMove && !xMove && !yMove) {
-            document.getElementById("Toss").innerHTML = "TOSS";
+            document.getElementById("Toss").innerHTML = z_accels[z_accels.length - 1];
+            document.getElementById("TossAngle").innerHTML = "TOSS";
           }
           callback(z_accels);
         }
