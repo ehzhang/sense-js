@@ -1,8 +1,30 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1em "Playfair Display", Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+.title {
+  font: 10em "Playfair Display", Helvetica, Arial, sans-serif;
+}
+
+.subtitle {
+  font: 2em "Playfair Display", Helvetica, Arial, sans-serif;
+  color: #737373;
+  margin-bottom: 30px;
 }
 
 a {
-  color: #00B7FF;
+  font-size: 1.2em;
+  color: #33b5e5;
+}
+
+@media only screen and (max-width: 480px) {
+  .title {
+    font-size: 3.2em;
+  }
+
+  .subtitle {
+    font-size: 1.3em;
+  }
 }

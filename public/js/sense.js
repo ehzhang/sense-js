@@ -67,7 +67,7 @@
     if (config.debug){
       var el = document.createElement('div');
       el.innerHTML = "" +
-          "<div id='sense-debugger' style='position:fixed; right:0; bottom:0; background: yellow; padding: 20px; font-size: 2em'>" +
+          "<div id='sense-debugger' style='position:fixed; right:0; bottom:0; color: white; background: black; padding: 20px; font-size: 2em'>" +
           "</div>";
       window.onload = function(){
         document.body.appendChild(el);
