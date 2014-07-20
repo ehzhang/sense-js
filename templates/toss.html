@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+  {% block body %}
+
+     <h1> This the toss page </h1>
+
+  <div class="main">
+    <h2>Device Motion</h2>
+    <div id = "Toss"></div>
+    <div id = "TossAngle"></div>
+    <table>
+      <tr>
+        <td>acceleration</td><td id="Accel">moo</td>
+      </tr>
+    </table>
+  </div>
+
+  <script type="text/javascript">
+
+      sense.toss(function(data){
+        console.log(data);
+        document.getElementById("Accel").innerHTML = data;
+      });
+  </script>
+  {% endblock %}

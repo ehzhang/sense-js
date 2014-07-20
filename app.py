@@ -17,6 +17,10 @@ def tilt():
 def flick():
     return render_template('flick.html')
 
+@app.route('/toss')
+def toss():
+    return render_template('toss.html')
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
