@@ -144,9 +144,9 @@
     if (window.DeviceOrientationEvent) {
       var callback,
           options = {
-            threshold: 25,
+            threshold: 5,
             direction: "both",
-            gestureDuration: 300
+            gestureDuration: 500
           },
           args = getArgs(arguments, options),
           lastSample,
@@ -302,7 +302,76 @@
           };
           callback(data);
         }
+      })
+    }
+  }
 
+
+  /*
+   Tilt scrolling!
+   */
+  Sense.prototype.addTiltScroll = function(optns) {
+    if (window.DeviceOrientationEvent) {
+      var options = optns == null ? {
+          maxHorizontalAngle: 80,
+          maxHorizontalOffset: 100,
+          maxHorizontalSpeed: 15,
+          maxVerticalAngle: 40,
+          maxVerticalOffset: 100,
+          maxVerticalSpeed: 15
+        } : optns,
+        lastNormHAngle = 0,
+        lastNormVAngle = 0,
+        verticalPageStop = false,
+        horizontalPageStop = false;
+
+      var horizontalFrameOffset = -options.maxHorizontalAngle/2,
+        verticalFrameOffset = -options.maxVerticalAngle/2;
+
+      window.addEventListener('deviceorientation', function(eventData){
+        var hAngle = eventData.gamma,
+          vAngle = -eventData.beta;
+
+        if(hAngle < horizontalFrameOffset){
+          horizontalFrameOffset = hAngle;
+        }
+
+        if(hAngle > horizontalFrameOffset + options.maxHorizontalAngle){
+          horizontalFrameOffset = hAngle - options.maxHorizontalAngle;
+        }
+
+        if(vAngle < verticalFrameOffset){
+          verticalFrameOffset = vAngle;
+        }
+
+        if(vAngle > verticalFrameOffset + options.maxVerticalAngle){
+          verticalFrameOffset = vAngle - options.maxVerticalAngle;
+        }
+
+        var normalHAngle = (hAngle - horizontalFrameOffset) * 2 /options.maxHorizontalAngle - 1.0,
+          normalVAngle = (vAngle - verticalFrameOffset) * 2 /options.maxVerticalAngle - 1.0,
+          positionHDelta = (normalHAngle - lastNormHAngle) * options.maxHorizontalOffset,
+          positionVDelta = (normalVAngle - lastNormVAngle) * options.maxVerticalOffset;
+
+        if(lastNormHAngle != 0)
+
+        lastNormHAngle = normalHAngle;
+        lastNormVAngle = normalVAngle;
+
+        var data = {
+          scrollByX: clippingMap(normalHAngle) * options.maxHorizontalSpeed + positionHDelta,
+          scrollByY: clippingMap(normalVAngle) * options.maxVerticalSpeed + positionVDelta
+        };
+
+        function clippingMap(num) {
+          var quadraticWidth = .6,
+            transition = 1.0 - quadraticWidth;
+          if (Math.abs(num) < transition) return 0;
+          if (num > 0) return Math.pow((num - transition) / quadraticWidth, 2);
+          return -Math.pow((num + transition) / quadraticWidth, 2)
+        }
+
+        window.scrollBy(data.scrollByX, data.scrollByY);
       })
     }
   };
