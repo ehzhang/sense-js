@@ -123,7 +123,7 @@ This one line allows the user to observe the tilt of the user's phone to scroll 
 
 Options             | Description | Default
 --------------------| ------------|------------
-maxHorizontalAngle  | (number)    |
+maxHorizontalAngle  | (number)    | 80
 maxHorizontalOffset | (number)    | 100
 maxHorizontalSpeed  | (number)    | 15 
 maxVerticalAngle    | (number)    | 40
