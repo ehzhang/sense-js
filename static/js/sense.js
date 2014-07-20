@@ -58,11 +58,13 @@
       })
     }
 
-
-
   } else {
     // Sense is not available on this device.
     console.log("Sense is not available on this device.");
+  }
+
+  if (sense.debug){
+    // Update the debuggin window
   }
 
   window.sense = sense;
