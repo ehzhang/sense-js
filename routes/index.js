@@ -26,4 +26,11 @@ router.get('/color-fling', function(req, res){
   res.sendfile('examples/color_fling.html');
 });
 
+router.get('/scroll', function(req, res) {
+  res.sendfile('examples/scroll.html');
+});
+
+router.get('/flip', function(req, res) {
+  res.sendfile('examples/flip.html');
+});
 module.exports = router;
