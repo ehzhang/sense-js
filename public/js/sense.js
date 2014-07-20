@@ -351,8 +351,6 @@
     if (window.DeviceOrientationEvent) {
       var callback,
           options = {
-            threshold: 25,
-            direction: "both",
             gestureDuration: 250
           },
           args = getArgs(arguments, options),
@@ -365,16 +363,12 @@
       setInterval(function(){intervalExpired = true}, options.gestureDuration);
 
       window.addEventListener('deviceorientation', function(eventData){
-        // Here, you take the eventData and the options that you have and
-        // process the data, and then feed it to the callback
         var final_gamma = 0
         var found = false;
         if(intervalExpired) {
           gammas[gammas.length] = eventData.gamma;
-          //document.getElementById("Flip").innerHTML = eventData.gamma;
           for (var i=0; i < 5; i++) {
             if (Math.abs(gammas[gammas.length-1] - gammas[gammas.length-1-i]) > 160) {
-              //document.getElementById("Floss").innerHTML = z_accels[z_accels.length - 1];
               document.getElementById("Flip").innerHTML = "FLIP";
               found = true;
               final_gamma = gammas[gammas.length - 1];
@@ -387,26 +381,6 @@
         if (found) {
           var data = {
             magnitude: Math.round(final_gamma)
-          };
-          callback(data);
-        }
-        var delta = lastSample - eventData.gamma;
-
-        if(delta > options.threshold) {
-          lastSample = eventData.gamma;
-          var data = {
-            direction: "LEFT",
-            magnitude: Math.round(delta)
-
-          };
-          callback(data);
-        }
-
-        if(delta < -options.threshold) {
-          lastSample = eventData.gamma;
-          var data = {
-            direction: "RIGHT",
-            magnitude: Math.round(-delta)
           };
           callback(data);
         }
