@@ -256,10 +256,6 @@
       window.addEventListener('devicemotion', function (eventData) {
         var acceleration = eventData.acceleration;
 
-        var data = {
-          z: Math.round(100*acceleration.z)/100
-        };
-
         if (intervalExpired) {
           z_accels[z_accels.length] = Math.round(10*acceleration.z)/10;
           x_accels[x_accels.length] = Math.round(10*acceleration.x)/10;
@@ -282,8 +278,12 @@
           if (zMove && !xMove && !yMove) {
             document.getElementById("Toss").innerHTML = z_accels[z_accels.length - 1];
             document.getElementById("TossAngle").innerHTML = "TOSS";
+
           }
-          callback(z_accels);
+            callback({
+              magnitude: z_accels[z_accels.length-1] > z_accels[z_accels.length-2] ? z_accels[z_accels.length-1] : z_accels[z_accels.length-2]
+            });
+
         }
       });
     }
