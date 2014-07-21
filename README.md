@@ -61,9 +61,9 @@ Orientation fires continuously, and emits alpha, beta, and gamma data from the d
 
 Options       | Description                              | Default
 ------------- | -----------------------------------------|-----------
-alphaThreshold| (number) Threshold for changes in delta  | 1
-betaThreshold | (number) Threshold for changes in beta   | 1 
-gammaThreshold| (number) Threshold for changes in gamma  | 1
+alphaThreshold| (number) Threshold for changes in delta  | 0
+betaThreshold | (number) Threshold for changes in beta   | 0
+gammaThreshold| (number) Threshold for changes in gamma  | 0
 radians       | (boolean) True to emit values in radians | false
 
 
