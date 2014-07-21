@@ -48,7 +48,7 @@ Download sense.js, and refer to it in an html file, and initialize it!
     
     sense.flick(function(data){
         // Your callback code here!
-    }
+    });
 </script>
 ```
 
