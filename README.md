@@ -13,6 +13,8 @@ common non-touch gesture interactions with simple javascript callbacks.
 This was made as a part of GreylockU's Hackfest, and will likely see changes to make
 things better/add more gestures :)
 
+Pull requests and feature suggestions are welcome!
+
 Demo
 ------
 You can find a demo at http://sense-js.jit.su/
