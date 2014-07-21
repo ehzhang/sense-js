@@ -77,7 +77,7 @@ Sample Usage:
 ```javascript
 sense.orientation(function(data){
     console.log(data)
-}
+});
 ```
 
 ### sense.flick([options], callback)
@@ -99,7 +99,7 @@ Sample Usage:
 ```javascript
 sense.flick(function(data){
     slidePage(data.direction)
-}
+});
 ```
 
 ### sense.fling([options], callback)
@@ -121,7 +121,7 @@ Sample Usage:
 ```javascript
 sense.fling(function(data){
     sendFile();
-}
+});
 ```
 
 ### sense.flip([options], callback)
@@ -141,7 +141,7 @@ Sample Usage:
 ```javascript
 sense.flip(function(data){
     showRandomNumber();
-}
+});
 ```
 
 ### sense.addTiltScroll([options])
